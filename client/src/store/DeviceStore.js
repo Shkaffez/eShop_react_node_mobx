@@ -2,26 +2,14 @@ import { makeAutoObservable } from "mobx";
 
 export default class DeviceStore {
     constructor() {
-        this._types = [
-            {id: 1, name: 'Холодильники'},
-            {id: 2, name: 'Смартфоны'},
-            {id: 3, name: 'Ноутбуки'},
-            {id: 4, name: 'Телевизоры'},
-        ]
+        this._types = []
 
-        this._brands = [
-            {id: 1, name: 'Samsung'},
-            {id: 2, name: 'Apple'}
-        ]
+        this._brands = []
 
-        this._devices = [
-            {id: 1, name: 'Iphone 12 pro', price: 100000, rating:  5, img: 'https://www.google.com/search?q=iphone+foto&sxsrf=ALiCzsbC9LZxi16VzoKkCJLOIUCazsts8A:1660069342613&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiV5d-bsLr5AhWpXfEDHbXXCBoQ_AUoAXoECAMQAw&biw=1365&bih=694&dpr=1#imgrc=yHJE1nWArKdUgM'},
-            {id: 2, name: 'Iphone 12 pro', price: 100000, rating:  5, img: 'https://www.google.com/search?q=iphone+foto&sxsrf=ALiCzsbC9LZxi16VzoKkCJLOIUCazsts8A:1660069342613&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiV5d-bsLr5AhWpXfEDHbXXCBoQ_AUoAXoECAMQAw&biw=1365&bih=694&dpr=1#imgrc=yHJE1nWArKdUgM'},
-            {id: 3, name: 'Iphone 12 pro', price: 100000, rating:  5, img: 'https://www.google.com/search?q=iphone+foto&sxsrf=ALiCzsbC9LZxi16VzoKkCJLOIUCazsts8A:1660069342613&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiV5d-bsLr5AhWpXfEDHbXXCBoQ_AUoAXoECAMQAw&biw=1365&bih=694&dpr=1#imgrc=yHJE1nWArKdUgM'},
-            {id: 4, name: 'Iphone 12 pro', price: 100000, rating:  5, img: 'https://www.google.com/search?q=iphone+foto&sxsrf=ALiCzsbC9LZxi16VzoKkCJLOIUCazsts8A:1660069342613&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiV5d-bsLr5AhWpXfEDHbXXCBoQ_AUoAXoECAMQAw&biw=1365&bih=694&dpr=1#imgrc=yHJE1nWArKdUgM'}
-        ]
+        this._devices = []
 
         this._selectedType = {}
+        this._selectedBrand = {}
         makeAutoObservable(this);
     }
     
@@ -41,8 +29,16 @@ export default class DeviceStore {
         this._selectedType = type
     }
 
+    setSelectedBrand (brand) {
+        this._selectedBrand = brand
+    }
+
     get selectedType () {
         return this._selectedType
+    }
+
+    get selectedBrand () {
+        return this._selectedBrand
     }
 
     get types () {

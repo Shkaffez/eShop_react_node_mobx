@@ -1,12 +1,25 @@
 import React, {useContext} from 'react';
+import { Card, Row } from 'react-bootstrap';
 import { Context } from '..';
+import { observer } from 'mobx-react-lite';
 
-const BrandBar = observe(() => {
+const BrandBar = observer(() => {
     const {device} = useContext(Context);
     return (
-        <div>
-            
-        </div>
+        <Row className="d-flex"> 
+            {device.brands.map(brand => 
+                <Card
+                    style={{cursor: "pointer"}}
+                    key={brand.id}
+                    className="p-3"
+                    onClick={() => device.setSelectedBrand(brand) }
+                    border={brand.id === device._selectedBrand.id ? "danger" : "light"} 
+                >
+                    
+                    {brand.name}
+                </Card>
+                )}
+        </Row>
     );
 });
 

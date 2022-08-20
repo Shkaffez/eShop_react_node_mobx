@@ -3,9 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const sequelize = require('./db');
-const models = require('./models/models');
 const router = require('./routes/index');
-const errorHandler = require('./middlevres/errorHandlingMiddleware');
+const errorHandler = require('./middlewares/errorHandlingMiddleware');
 const path = require('path');
 
 const app = express();
