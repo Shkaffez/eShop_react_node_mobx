@@ -2,18 +2,16 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useState, useEffect } from 'react';
 import { Modal, Button, Form, Dropdown, Row, Col } from 'react-bootstrap';
 import { Context } from '../..';
-import { fetchTypes, fetchBrands } from '../../http/deviceAPI';
+import { fetchTypes, fetchBrands, createDevice } from '../../http/deviceAPI';
 
 const CreateDevice = observer(({ show, onHide }) => {
         
     const { device } = useContext(Context);
-    const [info, setInfo] = useState([]);
-
+    
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [file, setFile] = useState(null);
-    const [brand, setBrand] = useState(null);
-    const [type, setType] = useState(null);
+    const [info, setInfo] = useState([]);
 
     useEffect(()=> {
         fetchTypes().then(data => device.setTypes(data))
@@ -30,11 +28,22 @@ const CreateDevice = observer(({ show, onHide }) => {
     }
 
     const changeInfo = (key, value, number) => {
-        setInfo(info.map(i => i.number === number))
+        setInfo(info.map(i => i.number === number ? {...i, [key]: [value]} : i))
     }
 
     const selectFile = (e) => {
         setFile(e.target.files[0]);
+    }
+
+    const addDevice = () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', `${price}`);
+        formData.append('img', file);
+        formData.append('brandId', device.selectedBrand.id);
+        formData.append('typeId', device.selectedType.id);
+        formData.append('info', JSON.stringify(info));
+        createDevice(formData).then(data => onHide());
     }
 
     return (
@@ -108,15 +117,23 @@ const CreateDevice = observer(({ show, onHide }) => {
                     {info.map(i =>
                         <Row className="mt-4" key={i.number}>
                             <Col md={4}>
-                                <Form.Control placeholder='Введите название свйства' />
+                                <Form.Control
+                                 placeholder='Введите название свйства' 
+                                 value={i.title}
+                                 onChange={(e) => changeInfo('title', e.target.value, i.number)}
+                                 />
                             </Col>
                             <Col md={4}>
-                                <Form.Control placeholder='Введите описание свйства' />
+                                <Form.Control
+                                 placeholder='Введите описание свйства' 
+                                 value={i.description}
+                                 onChange={(e) => changeInfo('description', e.target.value, i.number)}
+                                 />
                             </Col>
                             <Col md={4}>
                                 <Button
                                     variant={"outline-danger"}
-                                    onClick={() => removeInfo(i.number)}
+                                    onClick={() => removeInfo(i.number)}                                    
                                 >
                                     Удалить
                                 </Button>
@@ -128,7 +145,7 @@ const CreateDevice = observer(({ show, onHide }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-                <Button variant="outline-success" onClick={onHide}>Добавить</Button>
+                <Button variant="outline-success" onClick={addDevice}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );

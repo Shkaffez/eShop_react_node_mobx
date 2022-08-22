@@ -21,10 +21,12 @@ class DeviceController {
                         title: i.title,
                         description: i.description,
                         deviceId: device.id
-                    }));
+                    })
+                );
             }
 
             res.json(device);
+            
         } catch (error) {
             next(ApiError.badRequest(error.message));
         }
